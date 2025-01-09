@@ -1,0 +1,7 @@
+defaults:
+  - _self_
+  - models: model
+  - training: training
+
+model: ${models}
+training: ${training}
