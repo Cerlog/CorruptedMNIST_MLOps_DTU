@@ -1,0 +1,18 @@
+model:
+  _target_: corrupted_mnist.model.MyAwesomeModel
+  conv1_out_channels: 32
+  conv2_out_channels: 64
+  conv3_out_channels: 128
+  dropout_rate: 0.5
+  fc1_out_features: 10
+  input_channels: 1
+optimizer:
+  _target_: torch.optim.SGD
+  lr: 0.01
+  momentum: 0.9
+  nesterov: true
+training:
+  batch_size: 64
+  epochs: 10
+  save_dir: models
+  log_interval: 100

@@ -1,0 +1,11 @@
+# config/config.yaml
+defaults:
+  - model: mnist_cnn
+  - optimizer: adam
+  - _self_
+
+training:
+  batch_size: 32
+  epochs: 10
+  save_dir: "models"
+  log_interval: 100

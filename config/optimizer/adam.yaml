@@ -1,0 +1,4 @@
+# config/optimizer/adam.yaml
+_target_: torch.optim.Adam
+lr: 1.0e-3
+weight_decay: 1.0e-4

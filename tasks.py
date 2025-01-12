@@ -87,3 +87,87 @@ def git_add_all(ctx, message):
     ctx.run(f"git add .")
     ctx.run(f"git commit -m '{message}'")
     ctx.run(f"git push")
+
+
+@task
+def git_add_all(ctx, message):
+    """
+    Add, commit, and push all changes in the current directory.
+    
+    Command line usage:
+    $ invoke git-add-all "your commit message"
+    
+    Example:
+    $ invoke git-add-all "updated all files"
+    """
+    ctx.run(f"git add .")
+    ctx.run(f"git commit -m '{message}'")
+    ctx.run(f"git push")
+
+
+@task
+def git_single_file(ctx, filepath, message):
+    """
+    Add, commit, and push a single file to git.
+    
+    Command line usage:
+    $ invoke git-single-file "path/to/file" "your commit message"
+    
+    Example:
+    $ invoke git-single-file "src/main.py" "updated main function"
+    """
+    ctx.run(f"git add {filepath}")
+    ctx.run(f"git commit -m '{message}'")
+    ctx.run("git push")
+
+
+@task
+def git_folder(ctx, folder_path, message):
+    """
+    Add, commit, and push an entire folder to git.
+    
+    Command line usage:
+    $ invoke git-folder "path/to/folder" "your commit message"
+    
+    Example:
+    $ invoke git-folder "src/components" "updated components"
+    """
+    ctx.run(f"git add {folder_path}/*")
+    ctx.run(f"git commit -m '{message}'")
+    ctx.run("git push")
+
+
+@task
+def git_specific_files(ctx, files, message):
+    """
+    Add, commit, and push multiple specific files to git.
+    Files should be provided as a list of file paths.
+    
+    Command line usage:
+    $ invoke git-specific-files "['file1.py','file2.txt']" "your commit message"
+    
+    Example:
+    $ invoke git-specific-files "['src/main.py','tests/test_main.py']" "updated main and tests"
+    """
+    # files should be a list of file paths
+    for file in files:
+        ctx.run(f"git add {file}")
+    ctx.run(f"git commit -m '{message}'")
+    ctx.run("git push")
+
+
+@task
+def git_branch(ctx, branch_name, message):
+    """
+    Checkout a branch, add all changes, commit, and push to that branch.
+    
+    Command line usage:
+    $ invoke git-branch "branch-name" "your commit message"
+    
+    Example:
+    $ invoke git-branch "feature/new-login" "implemented new login system"
+    """
+    ctx.run(f"git checkout {branch_name}")
+    ctx.run("git add .")
+    ctx.run(f"git commit -m '{message}'")
+    ctx.run(f"git push origin {branch_name}")

@@ -1,0 +1,3 @@
+- optimizer=nesterov
+- optimizer.lr=0.01
+- training.batch_size=64

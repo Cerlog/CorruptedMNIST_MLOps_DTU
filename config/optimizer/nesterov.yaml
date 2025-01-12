@@ -1,0 +1,5 @@
+# config/optimizer/nesterov.yaml
+_target_: torch.optim.SGD
+lr: 1.0e-2
+momentum: 0.9
+nesterov: true
