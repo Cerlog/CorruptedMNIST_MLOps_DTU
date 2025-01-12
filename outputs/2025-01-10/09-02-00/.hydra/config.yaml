@@ -1,0 +1,12 @@
+model: ${models}
+training:
+  lr: 0.001
+  batch_size: 32
+  epochs: 10
+models:
+  _target_: src.corrupted_mnist.model.MyAwesomeModel
+  conv1_out_channels: 64
+  conv2_out_channels: 128
+  conv3_out_channels: 256
+  dropout_rate: 1.0
+  fc1_out_features: 10

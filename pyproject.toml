@@ -34,3 +34,10 @@ select = ["I001"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[project.scripts]
+train = "corrupted_mnist.train:main"
+evaluate = "corrupted_mnist.evaluate:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}

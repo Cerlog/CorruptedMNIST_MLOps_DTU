@@ -1,93 +1,83 @@
-import typer
-import hydra
-from omegaconf import DictConfig
-from hydra.utils import instantiate
-import torch
 import os
-import matplotlib.pyplot as plt
 import sys
+from pathlib import Path
+import typer
+import torch
+import matplotlib.pyplot as plt
+from hydra.utils import instantiate
+from hydra import initialize_config_dir, compose
+from omegaconf import DictConfig
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
+from .data import corrupt_mnist
+from .model import MyAwesomeModel
 
-app = typer.Typer()
+DEVICE = torch.device(
+    "cuda" if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available()
+    else "cpu"
+)
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
-
-def train_with_hydra(lr: float, batch_size: int, epochs: int) -> None:
+def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
     """
-    Typer entry point to train the model with CLI-provided arguments.
-    Overrides Hydra's default configuration values for training.
+    Example training function using Hydra + Typer.
     """
-    typer.echo(f"Starting training with Typer arguments: lr={lr}, batch_size={batch_size}, epochs={epochs}")
+    # 1) Determine the absolute path to your configs folder
+    script_dir = Path(__file__).resolve().parent   # e.g., .../src/corrupted_mnist
+    root_dir = script_dir.parent.parent            # go up 2 levels to project root
+    configs_path = root_dir / "configs"            # -> .../<project>/configs (absolute)
 
-    # Overriding Hydra configuration dynamically
-    @hydra.main(version_base=None, config_path="../../configs", config_name="config")
-    def train(cfg: DictConfig) -> None:
-        cfg.training.lr = lr
-        cfg.training.batch_size = batch_size
-        cfg.training.epochs = epochs
-        typer.echo(f"Using Hydra configuration: {cfg}")
+    # 2) Initialize Hydra for an absolute config dir:
+    with initialize_config_dir(config_dir=str(configs_path), version_base=None):
+        # 3) Compose your config, optionally overriding fields
+        cfg = compose(
+            config_name="config",
+            overrides=[
+                f"training.lr={lr}",
+                f"training.batch_size={batch_size}",
+                f"training.epochs={epochs}",
+            ],
+        )
 
-        # Instantiate the model
-        model = instantiate(cfg.model).to(DEVICE)
+    print("Training with Hydra + Typer")
+    print(f"lr={lr}, batch_size={batch_size}, epochs={epochs}")
 
-        # Load dataset
-        from data import corrupt_mnist
-        train_set, _ = corrupt_mnist()
-        train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=cfg.training.batch_size)
+    model = instantiate(cfg.model).to(DEVICE)
+    train_set, _ = corrupt_mnist()
+    dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
+    loss_fn = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
-        # Define loss and optimizer
-        loss_fn = torch.nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters(), lr=cfg.training.lr)
+    stats = {"train_loss": [], "train_accuracy": []}
+    for epoch in range(epochs):
+        for i, (img, target) in enumerate(dataloader):
+            img, target = img.to(DEVICE), target.to(DEVICE)
+            optimizer.zero_grad()
+            preds = model(img)
+            loss = loss_fn(preds, target)
+            loss.backward()
+            optimizer.step()
+            stats["train_loss"].append(loss.item())
+            acc = (preds.argmax(dim=1) == target).float().mean().item()
+            stats["train_accuracy"].append(acc)
+            if i % 100 == 0:
+                print(f"Epoch={epoch} batch={i} loss={loss.item():.4f}")
 
-        # Training loop
-        statistics = {"train_loss": [], "train_accuracy": []}
-        for epoch in range(cfg.training.epochs):
-            model.train()
-            for i, (img, target) in enumerate(train_dataloader):
-                img, target = img.to(DEVICE), target.to(DEVICE)
-                optimizer.zero_grad()
-                y_pred = model(img)
-                loss = loss_fn(y_pred, target)
-                loss.backward()
-                optimizer.step()
+    print("Training complete!")
+    os.makedirs("models", exist_ok=True)
+    torch.save(model.state_dict(), "models/model.pth")
 
-                # Record statistics
-                statistics["train_loss"].append(loss.item())
-                accuracy = (y_pred.argmax(dim=1) == target).float().mean().item()
-                statistics["train_accuracy"].append(accuracy)
-
-                if i % 100 == 0:
-                    typer.echo(f"Epoch {epoch}, iter {i}, loss: {loss.item()}")
-
-        typer.echo("Training complete")
-
-        # Save model and statistics
-        os.makedirs("models", exist_ok=True)
-        os.makedirs("reports/figures", exist_ok=True)
-        torch.save(model.state_dict(), "models/model.pth")
-        fig, axs = plt.subplots(1, 2, figsize=(15, 5))
-        axs[0].plot(statistics["train_loss"])
-        axs[0].set_title("Train loss")
-        axs[1].plot(statistics["train_accuracy"])
-        axs[1].set_title("Train accuracy")
-        fig.savefig("reports/figures/training_statistics.png")
-
-    # Run Hydra-enabled training
-    train()
+    os.makedirs("reports/figures", exist_ok=True)
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+    axs[0].plot(stats["train_loss"])
+    axs[0].set_title("Train Loss")
+    axs[1].plot(stats["train_accuracy"])
+    axs[1].set_title("Train Accuracy")
+    fig.savefig("reports/figures/training_statistics.png")
+    print("Saved model and figures!")
 
 
-@app.command()
-def train(
-    lr: float = typer.Option(0.001, help="Learning rate"),
-    batch_size: int = typer.Option(32, help="Batch size"),
-    epochs: int = typer.Option(10, help="Number of epochs"),
-) -> None:
-    """
-    Typer command to train the model with CLI-provided arguments.
-    """
-    train_with_hydra(lr=lr, batch_size=batch_size, epochs=epochs)
-
+def main():
+    typer.run(train)
 
 if __name__ == "__main__":
-    app()
+    main()
