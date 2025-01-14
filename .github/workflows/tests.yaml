@@ -26,7 +26,7 @@ jobs:
         pip install -r requirements_tests.txt
         pip install -e .
     - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV    
+      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
     - name: Test with pytest
       run: |
         pytest -v

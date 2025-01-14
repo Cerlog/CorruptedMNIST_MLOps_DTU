@@ -1,0 +1,40 @@
+{
+  "os": "Windows-10-10.0.26100-SP0",
+  "python": "CPython 3.11.0",
+  "startedAt": "2025-01-13T21:51:02.059408Z",
+  "program": "-m __main__",
+  "git": {
+    "remote": "https://github.com/Cerlog/CorruptedMNIST_MLOps_DTU.git",
+    "commit": "348fda17fcc45cf5b5b49698e07872073d23acd5"
+  },
+  "email": "petrboska@gmail.com",
+  "root": "C:\\Users\\Petrb\\Desktop\\DTU\\3rdSemester\\MLOps_2024\\CorruptedMNIST_MLOps_DTU",
+  "host": "DESKTOP-C6H8EH4",
+  "executable": "C:\\Users\\Petrb\\miniconda3\\envs\\corrupted_mnist\\python.exe",
+  "cpu_count": 8,
+  "cpu_count_logical": 16,
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1005171240960",
+      "used": "906479366144"
+    }
+  },
+  "memory": {
+    "total": "68433420288"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 16
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce GTX 1650",
+      "memoryTotal": "4294967296",
+      "cudaCores": 1024,
+      "architecture": "Turing"
+    }
+  ],
+  "cudaVersion": "12.5"
+}

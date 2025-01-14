@@ -1,7 +1,8 @@
+import hydra
 import torch
-from torch import nn
-import hydra 
 from omegaconf import DictConfig
+from torch import nn
+
 
 class MyAwesomeModel(nn.Module):
     def __init__(
@@ -11,10 +12,10 @@ class MyAwesomeModel(nn.Module):
         conv3_out_channels: int,
         dropout_rate: float,
         fc1_out_features: int,
-        input_channels: int = 1
+        input_channels: int = 1,
     ) -> None:
         super().__init__()
-        
+
         self.conv1 = nn.Conv2d(input_channels, conv1_out_channels, 3, 1)
         self.conv2 = nn.Conv2d(conv1_out_channels, conv2_out_channels, 3, 1)
         self.conv3 = nn.Conv2d(conv2_out_channels, conv3_out_channels, 3, 1)
@@ -32,11 +33,12 @@ class MyAwesomeModel(nn.Module):
         x = self.dropout(x)
         return self.fc1(x)
 
+
 if __name__ == "__main__":
 
     @hydra.main(config_path="../config", config_name="config")
     def main(cfg: DictConfig) -> None:
-        # Hyra will automatically instantiate the model using the config 
+        # Hyra will automatically instantiate the model using the config
         model = hydra.utils.instantiate(cfg.model)
         print(f"Model architecture: {model}")
         print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
