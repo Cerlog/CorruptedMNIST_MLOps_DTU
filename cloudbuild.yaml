@@ -13,6 +13,6 @@ steps:
   ]
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Push container image'
-  args: [
+  args: [ 
     'push',
     'europe-west1-docker.pkg.dev/exemplary-datum-447808-e6/artifact/my-image:1.0.0'    ]
