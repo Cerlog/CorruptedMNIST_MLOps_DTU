@@ -15,4 +15,5 @@ steps:
   id: 'Push container image'
   args: [
     'push',
-    'europe-west1-docker.pkg.dev/exemplary-datum-447808-e6/artifact/my-image:1.0.0'    ]
+    'europe-west1-docker.pkg.dev/exemplary-datum-447808-e6/artifact/my-image:1.0.0'    
+]
