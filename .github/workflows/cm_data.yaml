@@ -1,13 +1,18 @@
 name: DVC Workflow
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.dvc'
+      - '.dvc/**'
   pull_request:
     branches:
-    - main
+      - main
     paths:
-    - '**/*.dvc'
-    - '.dvc/**'
-
+      - '**/*.dvc'
+      - '.dvc/**'
 
 jobs:
   run_data_checker:

@@ -156,3 +156,6 @@ outs:
       remote_storage:
         etag: 08f5a58cfc99f68a031001
         version_id: '1736891745637109'
+  - relpath: train_label_distribution.png
+    md5: 4c436f2dd9e62f7a1bacedcf22ec774b
+    size: 13881
