@@ -47,6 +47,10 @@ outs:
   - relpath: raw/test_file.txt
     md5: c7b805eb76d64131035eabeb14cf44e8
     size: 15
+    cloud:
+      remote_storage:
+        etag: 08faa5dfa7f0fa8a031001
+        version_id: '1737052361577210'
   - relpath: raw/test_images.pt
     md5: dbaef582b7c62889340e79e408b1eb81
     size: 15680759
