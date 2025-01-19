@@ -149,3 +149,6 @@ outs:
       gcsremote:
         etag: 08cdc4c499eb818b031001
         version_id: '1737291507769933'
+  - relpath: test.txt
+    md5: 651bcee9497ae6d97abfcb65d961af25
+    size: 9
