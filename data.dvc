@@ -168,3 +168,6 @@ outs:
   - relpath: train_label_distribution.png
     md5: 4c436f2dd9e62f7a1bacedcf22ec774b
     size: 13881
+  - relpath: training_statistics.png
+    md5: a5b8260970245a97c3831e5693879dc8
+    size: 40804

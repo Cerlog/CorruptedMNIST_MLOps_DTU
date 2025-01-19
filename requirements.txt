@@ -13,3 +13,4 @@ wandb==0.19.2
 matplotlib==3.10.0
 matplotlib-inline==0.1.7
 dvc==3.59.0
+dvc-gs==3.0.1
