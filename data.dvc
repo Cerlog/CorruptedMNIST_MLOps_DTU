@@ -152,3 +152,10 @@ outs:
   - relpath: test.txt
     md5: 651bcee9497ae6d97abfcb65d961af25
     size: 9
+    cloud:
+      gcsremote:
+        etag: 08d1d3bccaf6818b031001
+        version_id: '1737294563191249'
+  - relpath: test_file.txt
+    md5: c7b805eb76d64131035eabeb14cf44e8
+    size: 15
