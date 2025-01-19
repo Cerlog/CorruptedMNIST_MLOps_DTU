@@ -1,0 +1,5 @@
+[core]
+    remote = gcsremote
+['remote "gcsremote"']
+    url = gs://mlops_action_test_bucket/
+    version_aware = true
