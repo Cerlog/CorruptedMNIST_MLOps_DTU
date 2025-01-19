@@ -156,6 +156,9 @@ outs:
       remote_storage:
         etag: 08f5a58cfc99f68a031001
         version_id: '1736891745637109'
+  - relpath: test.txt
+    md5: 651bcee9497ae6d97abfcb65d961af25
+    size: 9
   - relpath: test_label_distribution.png
     md5: cfbd2b586fca820793c34c328335b9e9
     size: 11484
