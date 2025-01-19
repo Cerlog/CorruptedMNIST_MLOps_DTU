@@ -12,11 +12,4 @@ python-dotenv==1.0.1
 wandb==0.19.2
 matplotlib==3.10.0
 matplotlib-inline==0.1.7
-dvc-data==3.16.8
-dvc-gs==3.0.1
-dvc-http==2.32.0
-dvc-objects==5.1.0
-dvc-render==1.0.2
-dvc-studio-client==0.21.0
-dvc-task==0.40.2
 dvc==3.59.0
