@@ -159,6 +159,9 @@ outs:
   - relpath: test.txt
     md5: 651bcee9497ae6d97abfcb65d961af25
     size: 9
+  - relpath: test_file.txt
+    md5: c7b805eb76d64131035eabeb14cf44e8
+    size: 15
   - relpath: test_label_distribution.png
     md5: cfbd2b586fca820793c34c328335b9e9
     size: 11484
